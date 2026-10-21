@@ -1,0 +1,31 @@
+name: Design toolkit weekly upstream review
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "20 8 * * 1"
+
+permissions:
+  contents: read
+
+jobs:
+  upstream:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Catalogue structure
+        run: node design-kit/scripts/check-catalog.mjs
+      - name: Check upstream existence, archives, licences and staleness
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: node design-kit/scripts/audit-upstreams.mjs --write
+      - name: Upload machine-readable review snapshot
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: design-kit-upstream-report
+          path: design-kit/upstream-report.json
+          retention-days: 30

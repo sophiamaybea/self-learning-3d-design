@@ -1,0 +1,58 @@
+name: ChatGPT Design Toolkit validation
+
+on:
+  push:
+    paths:
+      - "design-kit/**"
+      - ".github/workflows/design-kit-validation.yml"
+  pull_request:
+    paths:
+      - "design-kit/**"
+      - ".github/workflows/design-kit-validation.yml"
+  workflow_dispatch:
+
+jobs:
+  catalog:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Validate complete 41-source catalogue
+        run: node design-kit/scripts/check-catalog.mjs
+      - name: Check JS file syntax
+        run: |
+          node --check design-kit/scripts/check-catalog.mjs
+          node --check design-kit/scripts/fetch-reference.mjs
+          node --check design-kit/scripts/audit-upstreams.mjs
+
+  immersive-starter:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: design-kit/examples/react-immersive
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: design-kit/examples/react-immersive/package-lock.json
+      - name: Install locked dependencies
+        run: npm ci --no-fund
+      - name: Compile production build
+        run: npm run build
+      - name: Report high/critical dependency advisories
+        run: npm audit --audit-level=high --omit=dev
+      - name: Install Playwright Chromium
+        run: npx playwright install --with-deps chromium
+      - name: Run keyboard, accessibility and responsive smoke tests
+        run: npm run test:e2e
+      - name: Save failed test report
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: design-kit-playwright
+          path: design-kit/examples/react-immersive/playwright-report/
+          retention-days: 7
