@@ -2,7 +2,7 @@
 import React, { useEffect, useMemo, useRef, useState, Suspense } from "react";
 import { createRoot } from "react-dom/client";
 import { Canvas, useFrame } from "@react-three/fiber";
-import { Float } from "@react-three/drei";
+import { Float, OrbitControls } from "@react-three/drei";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Lenis from "lenis";
@@ -88,6 +88,7 @@ function Organism({compact=false}){
     <Cell position={compact?[-2.3,-1.2,-1]:[-2.45,-1.36,-2]} scale={.58} color="#e8c3bd" speed={.69} seed={5}/>
     <Cell position={compact?[2,1.25,-1]:[2.36,1.42,-2]} scale={.43} color="#cbd8c4" speed={1.22} seed={9}/>
    </Suspense>
+   <OrbitControls enableZoom={false} enablePan={false} enableRotate={!reduced} rotateSpeed={.45} minPolarAngle={Math.PI/3} maxPolarAngle={Math.PI*2/3}/>
   </Canvas>
   <div className="organism-label">{reduced?"FORM STUDY / STILL":"FORM STUDY / LIVE SIMULATION"}<span className="live-dot"/></div>
  </div>;
