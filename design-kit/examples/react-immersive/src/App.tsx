@@ -1,6 +1,6 @@
 import { Suspense, useEffect, useRef, useState } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
-import { Float, Environment } from '@react-three/drei';
+import { Float } from '@react-three/drei';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Lenis from 'lenis';
@@ -74,7 +74,6 @@ function SculptureStage({ reduced }: { reduced: boolean }) {
           <pointLight position={[-4, -2, 3]} intensity={25} color="#9bffc8" />
           <Suspense fallback={null}>
             <Sculpture reduced={reduced} />
-            <Environment preset="city" />
           </Suspense>
         </Canvas>
       )}

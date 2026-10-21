@@ -24,3 +24,5 @@ Source files and Playwright tests are provided. Tests need a working Node instal
 - GSAP is governed by its own standard licence. Check conditions for your intended distribution.
 - Add WebGL postprocessing only after profiling.
 - Treat visual design references as inspiration, not permission to duplicate their assets.
+
+The starter currently uses compatible major-version ranges; a lockfile has not yet been generated or committed. CI resolves dependencies with npm install. Before production use, generate and review package-lock.json and switch CI back to npm ci.
