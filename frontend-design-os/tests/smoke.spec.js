@@ -22,6 +22,23 @@ test("compiles a project brief and persists it locally",async({page})=>{
 test("navigation and primary call to action work",async({page})=>{
  await page.goto("/");
  await page.getByRole("link",{name:/OPEN THE STUDIO/}).click();
- await expect(page).toHaveURL(/#workbench/);
- await expect(page.getByRole("button",{name:/COMPILE DESIGN BRIEF/})).toBeVisible();
+ await expect(page).toHaveURL(/\/build-room$/);
+ await expect(page.getByRole("textbox",{name:"Describe your website"})).toBeVisible();
+});
+
+test("reverse engineered workspace creates and edits a real sandboxed preview",async({page})=>{
+ await page.goto("/build-room");
+ await page.getByRole("textbox",{name:"Describe your website"}).fill("Create a portfolio called Sonder Studio");
+ await page.getByRole("button",{name:"Generate or modify prototype"}).click();
+ await expect(page.locator('iframe[title="Sandboxed website preview"]')).toBeVisible();
+ await expect(page.getByText("PREVIEW READY")).toBeVisible();
+ await page.getByRole("textbox",{name:"Describe your website"}).fill("Make it dark and change the accent to blue");
+ await page.getByRole("button",{name:"Generate or modify prototype"}).click();
+ await page.getByRole("button",{name:"Code",exact:true}).click();
+ await expect(page.getByRole("textbox",{name:"Edit generated HTML"})).toContainText("#608fc4");
+ await page.getByRole("button",{name:"Activity",exact:true}).click();
+ await expect(page.getByText("Design updated")).toBeVisible();
+ await page.reload();
+ await page.getByRole("button",{name:"Code",exact:true}).click();
+ await expect(page.getByRole("textbox",{name:"Edit generated HTML"})).toContainText("Sonder Studio");
 });
