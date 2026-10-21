@@ -5,6 +5,7 @@
 ## What is included
 - `catalog.json`: machine-readable names, URLs, categories, observed licences, latest pushed dates, risk flags and adoption types.
 - `catalog.md`: human-readable full list.
+- `SKILL.md`: read-on-demand ChatGPT/Codex skill and [task recipes](recipes/chatgpt-prompts.md).
 - `AGENTS.md`: mandatory design, accessibility, licence and visual QA rules for coding assistants.
 - `AUDIT.md`: licence exceptions and the limits of the upstream audit.
 - `gallery/index.html`: open directly in a browser to explore and copy design prompts (no npm needed).
