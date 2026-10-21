@@ -1,12 +1,10 @@
-import { Suspense, useEffect, useRef, useState } from 'react';
-import { Canvas, useFrame } from '@react-three/fiber';
-import { Float } from '@react-three/drei';
+import { Suspense, lazy, useEffect, useRef, useState } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Lenis from 'lenis';
-import type { Group } from 'three';
 
 gsap.registerPlugin(ScrollTrigger);
+const SculptureScene = lazy(() => import('./SculptureScene'));
 
 function useReducedMotion(): boolean {
   const [reduced, setReduced] = useState(() => window.matchMedia('(prefers-reduced-motion: reduce)').matches);
@@ -29,32 +27,6 @@ function browserSupportsWebGL(): boolean {
   }
 }
 
-function Sculpture({ reduced }: { reduced: boolean }) {
-  const model = useRef<Group>(null);
-  useFrame((_, delta) => {
-    if (!reduced && model.current) {
-      model.current.rotation.y += delta * 0.15;
-      model.current.rotation.z += delta * 0.055;
-    }
-  });
-  return (
-    <Float speed={reduced ? 0 : 1.35} rotationIntensity={reduced ? 0 : 0.35} floatIntensity={reduced ? 0 : 0.5}>
-      <group ref={model} rotation={[0.2, -0.2, 0.1]}>
-        <mesh>
-          <torusKnotGeometry args={[1.08, 0.27, 190, 22, 2, 5]} />
-          <meshPhysicalMaterial
-            color="#d3facb"
-            metalness={0.42}
-            roughness={0.21}
-            clearcoat={1}
-            clearcoatRoughness={0.09}
-          />
-        </mesh>
-      </group>
-    </Float>
-  );
-}
-
 function SculptureStage({ reduced }: { reduced: boolean }) {
   const [webglAvailable, setWebglAvailable] = useState(false);
   useEffect(() => setWebglAvailable(browserSupportsWebGL()), []);
@@ -62,20 +34,7 @@ function SculptureStage({ reduced }: { reduced: boolean }) {
     <div className="sculpture-shell" aria-hidden="true">
       <div className="sculpture-fallback" />
       {webglAvailable && (
-        <Canvas
-          className="sculpture-canvas"
-          dpr={[1, 1.5]}
-          camera={{ position: [0, 0, 5.4], fov: 43 }}
-          gl={{ antialias: false, powerPreference: 'low-power' }}
-          fallback={null}
-        >
-          <ambientLight intensity={1.7} />
-          <pointLight position={[4, 6, 5]} intensity={50} color="#f2ffe9" />
-          <pointLight position={[-4, -2, 3]} intensity={25} color="#9bffc8" />
-          <Suspense fallback={null}>
-            <Sculpture reduced={reduced} />
-          </Suspense>
-        </Canvas>
+        <Suspense fallback={null}><SculptureScene reduced={reduced} /></Suspense>
       )}
       <span className="sculpture-coordinate">FORM STUDY / 001</span>
     </div>
@@ -110,7 +69,7 @@ export default function App() {
     <>
       <a className="skip-link" href="#main">Skip to main content</a>
       <header className="site-header">
-        <a className="brand" href="#top" aria-label="Form and Feeling home">F<span>∕</span>F</a>
+        <a className="brand" href="#top" >F<span>∕</span>F</a>
         <nav aria-label="Primary navigation">
           <a href="#manifesto">Approach</a>
           <a href="#studio">The studio</a>
