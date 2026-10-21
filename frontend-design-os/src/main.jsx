@@ -9,6 +9,7 @@ import Lenis from "lenis";
 import { ArrowUpRight, ArrowRight, ArrowDown, Plus, Check, Copy, Download, Sparkles, Menu, X, RotateCcw, MoveUpRight, Layers3, Eye, Activity, ShieldCheck, ExternalLink, ChevronRight, CircleHelp, CheckCircle2, LayoutGrid, Code2 } from "lucide-react";
 import * as THREE from "three";
 import "./styles.css";
+import Room from "./emergent.jsx";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -103,9 +104,9 @@ function Header(){
   <nav className={open?"site-nav open":"site-nav"} aria-label="Main navigation">
    <a onClick={()=>setOpen(false)} href="#method">Our method</a>
    <a onClick={()=>setOpen(false)} href="#experiment">The experiment</a>
-   <a onClick={()=>setOpen(false)} href="#stack">The stack</a>
+   <a onClick={()=>setOpen(false)} href="#stack">The stack</a><a onClick={()=>setOpen(false)} href="/build-room">Live builder ↗</a>
   </nav>
-  <a className="nav-cta" href="#workbench">OPEN THE STUDIO <ArrowUpRight size={14}/></a>
+  <a className="nav-cta" href="/build-room">OPEN THE STUDIO <ArrowUpRight size={14}/></a>
   <button aria-label={open?"Close menu":"Open menu"} aria-expanded={open} onClick={()=>setOpen(!open)} className="menu-button">{open?<X/>:<Menu/>}</button>
  </header>;
 }
@@ -115,7 +116,7 @@ function Hero(){
    <div className="overline"><span className="status-pip"/> AN EXPERIMENT IN DIGITAL CRAFT <span className="overline-index">/ 001</span></div>
    <h1>Websites<br/>with a <span className="italic-word">pulse.</span></h1>
    <p className="hero-summary">A new kind of design studio. Art direction, living 3D, cinematic motion and the obsessive eye to make every pixel matter.</p>
-   <div className="hero-buttons"><a className="btn btn-primary" href="#workbench">START A PROJECT <ArrowUpRight size={17}/></a><a className="hero-text-link" href="#experiment">EXPLORE THE EXPERIMENT <ArrowDown size={15}/></a></div>
+   <div className="hero-buttons"><a className="btn btn-primary" href="/build-room">START A PROJECT <ArrowUpRight size={17}/></a><a className="hero-text-link" href="#experiment">EXPLORE THE EXPERIMENT <ArrowDown size={15}/></a></div>
   </div>
   <div className="hero-art"><div className="orbit orbit-one"/><div className="orbit orbit-two"/><Organism/><div className="side-caption">FIG. 01 — ORGANIC DIGITAL MATTER<br/>REAL-TIME WEBGL EXPERIMENT</div></div>
   <div className="hero-bottom"><span>BUILT FOR THE IMPOSSIBLY PARTICULAR.</span><span className="hero-bottom-center">SCROLL TO EXPLORE <ArrowDown size={14}/></span><span>DESIGN IS NEVER FINISHED.</span></div>
@@ -215,4 +216,4 @@ function App(){
  useEffect(()=>{if(reduced)return;const ctx=gsap.context(()=>{gsap.utils.toArray(".section-head, .method-title, .method-intro, .experiment-head, .workbench-intro, .stack-header").forEach(el=>gsap.fromTo(el,{autoAlpha:.45,y:28},{autoAlpha:1,y:0,duration:.85,ease:"power2.out",scrollTrigger:{trigger:el,start:"top 88%",once:true}}));});return()=>ctx.revert();},[reduced]);
  return <><Header/><main><Hero/><Ticker/><Method/><Experiment/><Workbench/><Stack/></main><Footer/></>;
 }
-createRoot(document.getElementById("root")).render(<React.StrictMode><App/></React.StrictMode>);
+createRoot(document.getElementById("root")).render(<React.StrictMode>{window.location.pathname==="/build-room"?<Room/>:<App/>}</React.StrictMode>);
