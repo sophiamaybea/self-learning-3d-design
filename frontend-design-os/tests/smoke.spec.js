@@ -34,11 +34,11 @@ test("reverse engineered workspace creates and edits a real sandboxed preview",a
  await expect(page.getByText("PREVIEW READY")).toBeVisible();
  await page.getByRole("textbox",{name:"Describe your website"}).fill("Make it dark and change the accent to blue");
  await page.getByRole("button",{name:"Generate or modify prototype"}).click();
- await page.getByRole("button",{name:"Code",exact:true}).click();
- await expect(page.getByRole("textbox",{name:"Edit generated HTML"})).toContainText("#608fc4");
- await page.getByRole("button",{name:"Activity",exact:true}).click();
+ await page.locator(".bw-tabs").getByRole("button",{name:"Code",exact:true}).click();
+ await expect(page.getByRole("textbox",{name:"Edit generated HTML"})).toHaveValue(/#608fc4/);
+ await page.locator(".bw-tabs").getByRole("button",{name:"Activity",exact:true}).click();
  await expect(page.getByText("Design updated")).toBeVisible();
  await page.reload();
- await page.getByRole("button",{name:"Code",exact:true}).click();
- await expect(page.getByRole("textbox",{name:"Edit generated HTML"})).toContainText("Sonder Studio");
+ await page.locator(".bw-tabs").getByRole("button",{name:"Code",exact:true}).click();
+ await expect(page.getByRole("textbox",{name:"Edit generated HTML"})).toHaveValue(/Sonder Studio/);
 });
