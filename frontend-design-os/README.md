@@ -50,3 +50,15 @@ This code is original and currently part of a feature branch under `sophiamaybea
 ## Source
 
 `frontend-design-os-v1` branch, `frontend-design-os/` directory.
+
+## v0.2: Public Emergent analysis and independent build-room prototype
+
+- Enter the independently designed workspace at **/build-room** (also linked from the homepage).
+- Workspace includes a conversational prompt box, local rule-based HTML generation, persistent messages, project/file activity, source editor, responsive sandboxed preview, and downloadable HTML.
+- Supported edits: named colours or `#RRGGBB` accents, dark/light mode, explicit headline, button label, and site name. Any unsupported request should not be described as a successful autonomous code change.
+- Preview is contained in `<iframe sandbox="">` with no script permissions and a restrictive CSP on generated pages.
+- The **Research** tab and `research/emergent-public-reconstruction.md` document Emergent's publicly stated user workflow and engineering architecture, separating confirmed evidence from proposed design.
+- The product's brand, CSS, generated templates and interaction implementation are original; this is **not** Emergent software or a reproduction of private code.
+- Publish is deliberately not enabled: the browser-local mock execution system cannot safely deploy user-generated source without server-side sandboxing, authentication and human confirmation.
+
+A real autonomous agent runner, remote isolated preview environment and actual browser visual-diff loop remain on the roadmap.
